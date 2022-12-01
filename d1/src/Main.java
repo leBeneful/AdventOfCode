@@ -2,7 +2,7 @@ import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
-        Set<Elf> elfSet = new HashSet<>();
+        List<Elf> elfList = new LinkedList<>();
         System.out.println("Working Directory = " + System.getProperty("user.dir"));
         List<String> input = ReadFile.read("input1.txt");
 
@@ -13,10 +13,28 @@ public class Main {
                 i++;
             }
             Elf elf = new Elf(caloryList);
-            elfSet.add(elf);
+            elfList.add(elf);
         }
 
-        int max = elfSet.stream().map(Elf::getTotalOfCalories).max(Integer::compare).get();
-        System.out.println(max);
+
+
+        int max = 0; // = elfList.stream().map(Elf::getTotalOfCalories).max(Integer::compare).get();
+        int index = 0;
+        int sum = 0;
+        for(int j = 0; j<3; j++){
+            for (int i = 0; i<elfList.size(); i++){
+                int calories = elfList.get(i).getTotalOfCalories();
+                if(calories > max){
+                    max = calories;
+                    index = i;
+                }
+            }
+            sum += max;
+            elfList.remove(index);
+            max = 0;
+            index = 0;
+        }
+
+        System.out.println(sum);
     }
 }
